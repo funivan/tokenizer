@@ -1,0 +1,23 @@
+{
+  "name": "fiv/tokenizer",
+  "description": "Extreme flexible class for parsing and modify php code",
+  "minimum-stability": "stable",
+  "license": "GPL v2",
+  "authors": [
+    {
+      "name": "Ivan Shcherbak",
+      "email": "dev@funivan.com"
+    }
+  ],
+  "autoload": {
+    "psr-0": {
+      "Fiv\\Tokenizer\\": "Tokenizer/"
+    }
+  },
+  "require": {
+    "fiv/spl": "dev-master"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "3.7.*"
+  }
+}
