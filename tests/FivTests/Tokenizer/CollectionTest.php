@@ -66,7 +66,7 @@
         $this->assertInstanceOf('\Fiv\Tokenizer\Exception', $e);
       }
 
-      $itemsNum = $collection->num();
+      $itemsNum = $collection->count();
       $collection[] = new Token();
       $this->assertCount($itemsNum + 1, $collection);
 
