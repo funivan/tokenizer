@@ -11,7 +11,7 @@ Flexible library for parsing and modify php code;
 
 ##Use
 For example lets find all if and elseif conditions:
-```
+```php
   $fileTokens = new Fiv\Tokenizer\File(__FILE__);
   $query = $fileTokens->getCollection()->extendedQuery();
   $query->strict()->valueIs(array('if', 'elseif'));
