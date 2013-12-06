@@ -1,6 +1,6 @@
 {
   "name": "fiv/tokenizer",
-  "description": "Extreme flexible class for parsing and modify php code",
+  "description": "Extreme flexible library for parsing and modify php code",
   "minimum-stability": "stable",
   "license": "GPL v2",
   "authors": [
