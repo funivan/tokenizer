@@ -2,17 +2,36 @@
 
   namespace FivTests\Tokenizer;
 
+  use Demo\ConcatenationOptimize;
   use Fiv\Tokenizer\Token;
 
   class FileTest extends \FivTests\Main {
 
+    public function testModifyStringsConcatenation() {
+      $filePath = $this->getDemoDataDir() . '/strings.php';
+
+      $file = new \Fiv\Tokenizer\File($filePath);
+      new ConcatenationOptimize($file);
+      $code = (string)$file->getCollection();
+
+      $newStrings = [
+        '"`".$f."`";',
+        '$a."";',
+        '"   test".$test." + ".$a."\"";',
+      ];
+      foreach ($newStrings as $string) {
+        $this->assertContains($string, $code);
+      }
+
+    }
+
     public function testOpen() {
-      $file = new \Fiv\Tokenizer\File($this->getDemoFilePath());
+      $file = new \Fiv\Tokenizer\File($this->getDemoDataDir() . '/demo.php');
       $this->assertCount(7, $file->getCollection());
     }
 
     public function testFilePath() {
-      $file = \Fiv\Tokenizer\File::open($this->getDemoFilePath());
+      $file = \Fiv\Tokenizer\File::open($this->getDemoDataDir() . '/demo.php');
       $this->assertContains('demo-data/demo.php', $file->getPath());
     }
 
@@ -44,7 +63,7 @@
 
 
     public function testRefresh() {
-      $file = new \Fiv\Tokenizer\File($this->getDemoFilePath());
+      $file = new \Fiv\Tokenizer\File($this->getDemoDataDir() . '/demo.php');
       $q = $file->getCollection()->query();
 
       $this->assertCount(7, $q->getTokens());

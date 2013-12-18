@@ -1,8 +1,5 @@
 <?php
 
-  /**
-   * @author Ivan Shcherbak <dev@funivan.com>
-   */
 
   namespace Fiv\Tokenizer;
 
@@ -10,8 +7,9 @@
   use Fiv\Tokenizer\Query\Base;
 
   /**
-   * Class Query
-   * @package Fiv\Tokenizer
+   * @todo check cache
+   *
+   * @author Ivan Shcherbak <dev@funivan.com>
    */
   class Query extends Base {
 

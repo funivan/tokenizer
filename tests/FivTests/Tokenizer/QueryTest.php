@@ -10,7 +10,7 @@
   class QueryTest extends Main {
 
     public function testSimpleFind() {
-      $file = new \Fiv\Tokenizer\File($this->getDemoFilePath());
+      $file = new \Fiv\Tokenizer\File($this->getDemoDataDir().'/demo.php');
       $q = $file->getCollection()->query();
 
       $q->valueIs(1);
