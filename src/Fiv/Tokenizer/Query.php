@@ -21,8 +21,6 @@
 
     const GREATER_THAN = 3;
 
-    const GREATER_THAN_EQUAL = 4;
-
     const LESS_THAN = 5;
 
     const LESS_THAN_EQUAL = 6;
@@ -113,22 +111,6 @@
      */
     public function lineLt($lineNumber) {
       return $this->addCondition(self::FIELD_LINE, $lineNumber, self::LESS_THAN);
-    }
-
-    /**
-     * @param $lineNumber
-     * @return $this
-     */
-    public function lineGtEq($lineNumber) {
-      return $this->addCondition(self::FIELD_LINE, $lineNumber, self::GREATER_THAN_EQUAL);
-    }
-
-    /**
-     * @param $lineNumber
-     * @return $this
-     */
-    public function lineLtEq($lineNumber) {
-      return $this->addCondition(self::FIELD_LINE, $lineNumber, self::LESS_THAN_EQUAL);
     }
 
 
@@ -257,13 +239,6 @@
           }
         }
 
-        if (!empty($this->{$field}[self::GREATER_THAN_EQUAL])) {
-          foreach ($this->{$field}[self::GREATER_THAN_EQUAL] as $lineGreaterThanEqual) {
-            if ($value < $lineGreaterThanEqual) {
-              return false;
-            }
-          }
-        }
 
         if (!empty($this->{$field}[self::LESS_THAN])) {
           foreach ($this->{$field}[self::LESS_THAN] as $lineLessThan) {
@@ -273,13 +248,6 @@
           }
         }
 
-        if (!empty($this->{$field}[self::LESS_THAN_EQUAL])) {
-          foreach ($this->{$field}[self::LESS_THAN_EQUAL] as $lineLessThanEqual) {
-            if ($value > $lineLessThanEqual) {
-              return false;
-            }
-          }
-        }
       }
 
       return true;

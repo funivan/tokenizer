@@ -1,13 +1,13 @@
 <?php
 
-  namespace FivTests\Tokenizer;
+  namespace Tests\Tokenizer;
 
   use Fiv\Tokenizer\Token;
 
   /**
    * @author Ivan Shcherbak <dev@funivan.com> 11/25/13
    */
-  class ExceptionTest extends \FivTests\Main {
+  class ExceptionTest extends \Tests\Main {
 
     public function testSetTokenValueException() {
       $token = new Token();

@@ -1,6 +1,6 @@
 <?php
 
-  namespace FivTests\Tokenizer;
+  namespace Tests\Tokenizer;
 
   use Fiv\Tokenizer\Collection;
   use Fiv\Tokenizer\Token;
@@ -8,7 +8,7 @@
   /**
    * @author Ivan Shcherbak <dev@funivan.com> 11/25/13
    */
-  class BlockTest extends \FivTests\Main {
+  class BlockTest extends \Tests\Main {
 
     /**
      * @return \Fiv\Tokenizer\File
@@ -58,6 +58,10 @@ CODE;
 
     }
 
+    /**
+     *
+     * @return bool
+     */
     public function testMapCollectionInvalidFunction() {
 
       try {

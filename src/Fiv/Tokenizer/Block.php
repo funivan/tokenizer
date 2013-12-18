@@ -8,6 +8,7 @@
    * @method \Fiv\Tokenizer\Collection getLast();
    * @method \Fiv\Tokenizer\Collection getFirst();
    * @method \Fiv\Tokenizer\Collection[] getItems();
+   * @method \Fiv\Tokenizer\Collection[] iterate();
    * @method \Fiv\Tokenizer\Collection extractItems($offset, $length = null);
    *
    * @package Fiv\Tokenizer

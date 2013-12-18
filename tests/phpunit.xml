@@ -2,15 +2,17 @@
 <phpunit
         bootstrap="./Bootstrap.php"
         colors="true"
-        sstopOnError="false"
+        stopOnError="false"
         stopOnFailure="false"
         stopOnIncomplete="false"
         stopOnSkipped="false"
         convertErrorsToExceptions="true"
         >
-
-    <blacklist>
-        <directory>./demo-data</directory>
-    </blacklist>
+    <filter>
+        <blacklist>
+            <directory>./demo-data</directory>
+            <directory>./Demo/</directory>
+        </blacklist>
+    </filter>
 
 </phpunit>

@@ -1,29 +1,11 @@
 <?php
 
-  namespace FivTests\Tokenizer;
+  namespace Tests\Tokenizer;
 
-  use Demo\ConcatenationOptimize;
   use Fiv\Tokenizer\Token;
 
-  class FileTest extends \FivTests\Main {
+  class FileTest extends \Tests\Main {
 
-    public function testModifyStringsConcatenation() {
-      $filePath = $this->getDemoDataDir() . '/strings.php';
-
-      $file = new \Fiv\Tokenizer\File($filePath);
-      new ConcatenationOptimize($file);
-      $code = (string)$file->getCollection();
-
-      $newStrings = [
-        '"`".$f."`";',
-        '$a."";',
-        '"   test".$test." + ".$a."\"";',
-      ];
-      foreach ($newStrings as $string) {
-        $this->assertContains($string, $code);
-      }
-
-    }
 
     public function testOpen() {
       $file = new \Fiv\Tokenizer\File($this->getDemoDataDir() . '/demo.php');
@@ -32,7 +14,7 @@
 
     public function testFilePath() {
       $file = \Fiv\Tokenizer\File::open($this->getDemoDataDir() . '/demo.php');
-      $this->assertContains('demo-data/demo.php', $file->getPath());
+      $this->assertContains('files/demo.php', $file->getPath());
     }
 
 

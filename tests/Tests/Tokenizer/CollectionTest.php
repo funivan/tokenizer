@@ -1,6 +1,6 @@
 <?php
 
-  namespace FivTests\Tokenizer;
+  namespace Tests\Tokenizer;
 
   use Fiv\Tokenizer\Collection;
   use Fiv\Tokenizer\Token;
@@ -8,7 +8,7 @@
   /**
    * @author Ivan Shcherbak <dev@funivan.com> 11/25/13
    */
-  class CollectionTest extends \FivTests\Main {
+  class CollectionTest extends \Tests\Main {
 
     public function testCreateFromString() {
       $collection = Collection::createFromString('<?php echo 123;');
@@ -58,7 +58,6 @@
 
       $collection[0] = new Token();
 
-
       try {
         $collection[10] = null;
         $this->fail('Invalid token set. Expect exception.');
@@ -69,6 +68,46 @@
       $itemsNum = $collection->count();
       $collection[] = new Token();
       $this->assertCount($itemsNum + 1, $collection);
+
+    }
+
+    public function testAddTokenAfter() {
+      $collection = Collection::createFromString('<?php echo 123;');
+
+      $newToken = new Token();
+      $newToken->setValue("echo");
+      $collection->addAfter(4, $newToken);
+
+      $this->assertEquals($newToken, $collection->getLast());
+
+      $exception = null;
+      try {
+        $collection->addAfter(4, 'test');
+      } catch (\Exception $exception) {
+      }
+      $this->assertInstanceOf('Exception', $exception);
+    }
+
+    public function testAddCollectionAfter() {
+      $collection = Collection::createFromString('<?php echo 123;');
+
+      $otherCollection = Collection::createFromString('<?php echo "test";');
+      $otherCollection->getFirst()->remove();
+      $otherCollection->refresh();
+
+      $collection->addAfter(4, $otherCollection);
+
+      $collection->slice(5);
+
+      $this->assertEquals($otherCollection->assemble(), $collection->assemble());
+
+    }
+
+    public function testDump() {
+      $collection = Collection::createFromString("<?php echo 123;");
+      $dumpString = $collection->getDumpString();
+      $this->assertContains("<pre>", $dumpString);
+      $this->assertContains("T_ECHO", $dumpString);
 
     }
 

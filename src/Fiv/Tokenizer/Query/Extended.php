@@ -256,7 +256,7 @@
               # remove last token if not valid
               //echo '$validTokenForExpect:' . (int)$validTokenFind . " \$index:$index\n";
 
-              if (!$validTokenFind and $index == $this->collection->num()) {
+              if (!$validTokenFind and $index == $this->collection->count()) {
                 $lastTokenIndex = false;
                 break;
               }
@@ -333,8 +333,8 @@
     /**
      *
      *
-     * @param Query            $query
-     * @param int              $type
+     * @param Query $query
+     * @param int $type
      * @param array|string|int $options
      * @throws \Fiv\Tokenizer\Exception
      * @return Extended

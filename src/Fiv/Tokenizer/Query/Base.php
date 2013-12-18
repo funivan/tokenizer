@@ -25,6 +25,10 @@
       $this->collection = $collection;
     }
 
+    /**
+     * @codeCoverageIgnore
+     * @return bool
+     */
     protected abstract function parse();
 
     protected function cleanCache() {

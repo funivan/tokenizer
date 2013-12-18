@@ -1,13 +1,13 @@
 <?php
 
-  namespace FivTests\Tokenizer;
+  namespace Tests\Tokenizer;
 
   use Fiv\Tokenizer\Token;
 
   /**
    * @author Ivan Shcherbak <dev@funivan.com> 11/25/13
    */
-  class TokenTest extends \FivTests\Main {
+  class TokenTest extends \Tests\Main {
 
     public function testGetTypeName() {
 

@@ -9,6 +9,7 @@
    * @method \Fiv\Tokenizer\Token getLast();
    * @method \Fiv\Tokenizer\Token getFirst();
    * @method \Fiv\Tokenizer\Token[] getItems();
+   * @method \Fiv\Tokenizer\Token[] iterate();
    * @method \Fiv\Tokenizer\Collection extractItems($offset, $length = null);
    *
    * @package Fiv\Tokenizer
@@ -52,8 +53,8 @@
 
     /**
      * Truncate current list of tokens and add new
-     * You can pass array of raw token demo-data OR
-     * array of created tokens
+     * You can pass array of raw tokens data OR
+     * array of token objects
      *
      * @param array|Token[] $items
      * @return $this
@@ -77,7 +78,7 @@
      * Add to the end or modify token with given key
      *
      * @param int|null $offset
-     * @param mixed    $item
+     * @param mixed $item
      * @return $this|void
      * @throws \Fiv\Tokenizer\Exception
      */
@@ -93,12 +94,15 @@
       }
     }
 
-
+    /**
+     * @param int $index
+     * @param Token|Collection $item
+     * @return $this
+     * @throws Exception
+     */
     public function addAfter($index, $item) {
 
-      if (is_array($item)) {
-        $insertTokens = $item;
-      } elseif ($item instanceof Token) {
+      if ($item instanceof Token) {
         $insertTokens = array($item);
       } elseif ($item instanceof Collection) {
         $insertTokens = $item->getItems();
@@ -174,5 +178,16 @@
       return new Collection($tokens);
     }
 
+    /**
+     * @return string
+     */
+    public function getDumpString() {
+      $string = "<pre>\n";
+      foreach ($this->getItems() as $token) {
+        $string .= '[' . $token->getTypeName() . ']' . "\n" . print_r($token->getData(), true) . "\n";
+      }
+      $string .= " </pre > ";
+      return $string;
+    }
   }
 

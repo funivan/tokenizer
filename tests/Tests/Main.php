@@ -1,6 +1,6 @@
 <?php
 
-  namespace FivTests;
+  namespace Tests;
 
   use Fiv\Tokenizer\File;
 
@@ -10,7 +10,7 @@
   class Main extends \PHPUnit_Framework_TestCase {
 
     protected function getDemoDataDir() {
-      return __DIR__ . '/../demo-data';
+      return __DIR__ . '/../files';
     }
 
     /**
