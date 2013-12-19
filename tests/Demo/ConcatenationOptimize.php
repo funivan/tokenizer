@@ -16,7 +16,10 @@
      */
     protected $file = null;
 
-    function __construct(\Fiv\Tokenizer\File $file) {
+    /**
+     * @param \Fiv\Tokenizer\File $file
+     */
+    public function __construct(\Fiv\Tokenizer\File $file) {
       $this->file = $file;
       $this->optimize();
     }

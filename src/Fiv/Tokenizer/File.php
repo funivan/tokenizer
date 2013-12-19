@@ -1,10 +1,11 @@
 <?php
 
+
+  namespace Fiv\Tokenizer;
+
   /**
    * @author Ivan Shcherbak <dev@funivan.com>
    */
-  namespace Fiv\Tokenizer;
-
   class File {
 
     /**

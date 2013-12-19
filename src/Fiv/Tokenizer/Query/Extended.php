@@ -247,7 +247,6 @@
 
               $lastTokenIndex = $queryIndex + $index;
 
-              $validTokenFind = false;
               # Go to next token and check it.
               # If condition break return last token.
               # And set Index to this token +1 For next condition
@@ -363,7 +362,7 @@
      *
      * @return $this
      */
-    protected function cleanCache() {
+    public function cleanCache() {
       $this->cache = [];
       $this->resultStartIndexes = [];
       $this->resultStartIndexes = [];

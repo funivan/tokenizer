@@ -26,7 +26,6 @@
         $this->assertContains($string, $code);
       }
 
-//      echo "\n***".__LINE__."***\n<pre>".print_r($file->getCollection()->getDumpString(), true)."</pre>\n";die();
     }
 
     public function testStringsInside() {

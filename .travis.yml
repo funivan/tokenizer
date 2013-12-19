@@ -5,7 +5,7 @@ php:
 
 before_script:
   - composer self-update
-  - composer update --no-interaction
+  - composer update --dev --no-interaction
 
 script:
  - mkdir -p build/logs

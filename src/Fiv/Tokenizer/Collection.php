@@ -3,7 +3,6 @@
   namespace Fiv\Tokenizer;
 
   /**
-   * Class Collection
    * Represent access and manipulation array of tokens
    *
    * @method \Fiv\Tokenizer\Token getLast();
@@ -41,7 +40,7 @@
      */
     public function assemble() {
       $string = '';
-      foreach ($this->items as $token) {
+      foreach ($this->iterate() as $token) {
         if (!$token->valid()) {
           continue;
         }
@@ -121,7 +120,7 @@
      * @return $this
      */
     public function refresh() {
-      foreach ($this->items as $index => $token) {
+      foreach ($this->iterate() as $index => $token) {
         if (!$token->valid()) {
           unset($this->items[$index]);
         }

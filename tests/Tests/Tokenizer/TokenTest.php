@@ -2,8 +2,6 @@
 
   namespace Tests\Tokenizer;
 
-  use Fiv\Tokenizer\Token;
-
   /**
    * @author Ivan Shcherbak <dev@funivan.com> 11/25/13
    */

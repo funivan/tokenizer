@@ -8,6 +8,10 @@
 
   use Fiv\Tokenizer;
 
+  /**
+   *
+   * @author Ivan Shcherbak <dev@funivan.com>
+   */
   abstract class Base {
 
     /**
@@ -20,7 +24,9 @@
      */
     protected $cache = null;
 
-
+    /**
+     * @param Tokenizer\Collection $collection
+     */
     public function __construct(Tokenizer\Collection $collection = null) {
       $this->collection = $collection;
     }
@@ -31,7 +37,12 @@
      */
     protected abstract function parse();
 
-    protected function cleanCache() {
+    /**
+     * Clean cache
+     *
+     * @return $this
+     */
+    public function cleanCache() {
       $this->cache = null;
       return $this;
     }

@@ -3,12 +3,9 @@
 
   namespace Fiv\Tokenizer;
 
-  use Fiv\Tokenizer\Collection;
   use Fiv\Tokenizer\Query\Base;
 
   /**
-   * @todo check cache
-   *
    * @author Ivan Shcherbak <dev@funivan.com>
    */
   class Query extends Base {

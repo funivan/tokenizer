@@ -3,7 +3,7 @@
   namespace Fiv\Tokenizer;
 
   /**
-   * @package Fiv\Tokenizer
+   * @author Ivan Shcherbak <dev@funivan.com>
    */
   class Exception extends \Exception {
 

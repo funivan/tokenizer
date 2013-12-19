@@ -9,6 +9,9 @@
    */
   class Main extends \PHPUnit_Framework_TestCase {
 
+    /**
+     * @return string
+     */
     protected function getDemoDataDir() {
       return __DIR__ . '/../files';
     }
