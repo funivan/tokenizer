@@ -61,6 +61,20 @@
     }
 
     /**
+     * Expect - exclude token from result. Main difference from search condition
+     *
+     * <code>
+     *  # perform simple search on this code
+     *  #'<?php echo 1+5*9; echo 2+4'
+     *
+     *  $collection->strict()->valueIs('echo');
+     *  $collection->search()->valueIs(';');
+     *
+     *  # result is WITHOUT semicolon
+     *  # echo 1+5*9
+     *
+     * </code>
+     *
      * @return Query
      */
     public function expect() {
@@ -70,6 +84,20 @@
     }
 
     /**
+     * Search condition include token, Expect - exclude.
+     *
+     * <code>
+     *  # perform simple search on this code
+     *  #'<?php echo 1+5*9; echo 2+4'
+     *
+     *  $collection->strict()->valueIs('echo');
+     *  $collection->search()->valueIs(';');
+     *
+     *  # result WITH semicolon
+     *  # echo 1+5*9;
+     *
+     * </code>
+     *
      * @return Query
      */
     public function search() {
@@ -123,34 +151,28 @@
 
     /**
      *
-     * 1. Беремо індекс 0.
-     * 2. Беремо умову 0.
-     * 3. Перевіряємо чи перша умова підходить для індекса 0
-     *  3.1 Якщо умова підходить повертаємо 0
-     *  3.2 Якщо умова не підходить повертаємо false
+     * Take token 0.
+     * Take query 0.
+     * Check token  is valid to query:
      *
-     * 4. Якщо наша умова STRICT
-     *  4.1. Умова підійшла. Встановлюємо останню позицію хорошого блоку на даний індекс 0.
-     *       Беремо токен 1 і беремо умову 1.
-     *       Ідемо до кроку 1 перевіряємо дальші умови
-     *  4.2. Умова не підійшла Беремо індекс 1 і умову 0.
-     *       Ідемо до кроку 1 і перевіряємо все дальше
+     * Strict
+     *   Token invalid - Take next token
+     *   Token valid   - Take next token and Next query
      *
-     * 5. Якщо умова POSSIBLE
-     *  5.1. Умова підійшла.
-     *       Встановлюємо останню позицію хорошого блоку на даний індекс 0.
-     *       Беремо токен 1 і беремо умову 1.
-     *       Ідемо до кроку 1 перевіряємо дальші умови
-     *  5.2. Умова не підійшла
-     *       Беремо індекс 0 і беремо умову 1.
-     *       Ідемо до кроку 1 і перевіряємо все дальше
+     * Possible
+     *   Token invalid - Take next query and same token
+     *   Token valid   - Take next token and Next query
      *
-     * 6. Якщо умова EXPECT
-     *  6.1. Умова підійшла.
+     * Expect
+     *   Token valid   - Take next query and previous token
+     *   Token invalid - Take next token and same query (if last token All queries failed)
      *
+     * Search
+     *   Token valid   - Take next query and next token
+     *   Token invalid - Take next token and same query (if last token All queries failed)
      *
-     *
-     *
+     * Difference between Expect and Search is following:
+     * On expect wt
      *
      * @throws \Fiv\Tokenizer\Exception
      * @return Block
@@ -180,10 +202,8 @@
 
         foreach ($listOfQueries as $queryIndex => $rawQueryInfo) {
 
-          $this->log('start scan from:' . ($queryIndex + $index));
           /** @var $token Token */
           $token = $this->collection[$queryIndex + $index];
-          $this->log('|' . ($token) . '|');
 
           //echo "\n";
           //echo "Start check Token :" . ($queryIndex + $index) . " (" . $token . "). Query index: " . $queryIndex . "\n";
@@ -203,8 +223,6 @@
 
           # Перший токен ми знаємо де знаходиться. Перевіряємо його і всі наступні
           $isValid = $query->checkToken($token);
-
-          $this->log("Validation:" . (string)$isValid);
 
           if ($type == static::STRICT) {
             if ($isValid) {
@@ -234,34 +252,30 @@
               # Go to next token and check it.
               # If condition break return last token.
               # And set Index to this token +1 For next condition
-              foreach ($this->collection->getItems() as $indexForExpectCheck => $tokenForExpectCheck) {
+              $tokenLastIndexInCollection = $this->collection->count() - 1;
+              foreach ($this->collection->iterate() as $indexForExpectCheck => $tokenForExpectCheck) {
                 if ($indexForExpectCheck < $lastTokenIndex) {
                   continue;
                 }
-                $tokenForExpect = $this->collection[$queryIndex + $index];
 
-                //echo "Check expect strict: " . $tokenForExpect . "\n";
+                $currentTokenIndex = $queryIndex + $index;
+                $tokenForExpect = $this->collection[$currentTokenIndex];
+
                 # Check token for expect condition
                 $validTokenFind = $query->checkToken($tokenForExpect);
-                //echo "Validation: " . (int)$validTokenFind . "\n";
-                if (!$validTokenFind) {
+
+                if (!$validTokenFind and $currentTokenIndex == $tokenLastIndexInCollection) {
+                  # invalid last token
+                  $lastTokenIndex = false;
+                  break;
+                } elseif (!$validTokenFind) {
                   $index++;
                 } else {
-                  $lastTokenIndex = $queryIndex + $index;
                   # go check next condition. Expect condition fail.
+                  $lastTokenIndex = $queryIndex + $index;
                   break;
                 }
               }
-
-              # remove last token if not valid
-              //echo '$validTokenForExpect:' . (int)$validTokenFind . " \$index:$index\n";
-
-              if (!$validTokenFind and $index == $this->collection->count()) {
-                $lastTokenIndex = false;
-                break;
-              }
-
-              //echo "Expect finished. Lat token index: " . $lastTokenIndex . " \n";
 
             } else {
               $lastTokenIndex = false;
@@ -271,8 +285,6 @@
 
           } elseif ($type === static::SECTION) {
 
-            $this->log('$isValid:' . $isValid);
-
             $startIndex = $queryIndex + $index + 1;
 
             if ($isValid) {
@@ -280,16 +292,12 @@
             } else {
               $blockEndFlag = null;
             }
-            $this->log('$blockEndFlag:' . $blockEndFlag);
 
-            $this->log('Start from index:' . $startIndex);
             /** @var $token Token */
             foreach ($this->collection->getItems() as $tokenIndex => $token) {
               if ($tokenIndex < $startIndex) {
                 continue;
               }
-              $this->log('$blockEndFlag:' . $blockEndFlag);
-              $this->log('check token:' . $token);
 
               if ($query->checkToken($token)) {
                 $blockEndFlag++;
@@ -300,12 +308,10 @@
               if ($blockEndFlag === 0) {
                 $lastTokenIndex = $tokenIndex;
                 $index = $lastTokenIndex - $queryIndex;
-                $this->log('block end:' . $lastTokenIndex);
                 break;
               }
             }
 
-            $this->log('$lastTokenIndex:' . __LINE__ . ':' . $lastTokenIndex);
           }
 
           if ($type == static::EXPECT) {
@@ -317,11 +323,8 @@
         }
 
         if (is_int($firstTokenIndex) and is_int($lastTokenIndex)) {
-          $this->log('$firstTokenIndex:' . $firstTokenIndex);
-          $this->log('$lastTokenIndex:' . $lastTokenIndex);
-
+          # All queries works fine. Add new collection to cache
           $blockCollection = $this->collection->extractItems($firstTokenIndex, $lastTokenIndex - $firstTokenIndex + 1);
-          //echo "start:$firstTokenIndex" . "\nlast:$lastTokenIndex///" . $blockCollection . "\n";
           $this->resultStartIndexes[] = $firstTokenIndex;
           $this->resultEndIndexes[] = $lastTokenIndex;
           $this->cache->append($blockCollection);
@@ -332,10 +335,9 @@
 
     /**
      *
-     *
      * @param Query $query
-     * @param int $type
-     * @param array|string|int $options
+     * @param int   $type
+     * @param array $options
      * @throws \Fiv\Tokenizer\Exception
      * @return Extended
      */
@@ -353,6 +355,8 @@
     }
 
     /**
+     * Return all queries assigned to this class
+     *
      * @return Query[]
      */
     public function getQueries() {
@@ -372,12 +376,14 @@
     }
 
     /**
+     * With this query you can simply find function body, arguments, arrays etc
      *
      * <code>
-     *  // find if with conditions and body
+     *  # find if with conditions and body
      *  $q->strict()->valueIs('if');
      *  $q->section('{', '}');
      * </code>
+     *
      *
      * @param string $startDelimiter
      * @param string $endDelimiter
@@ -388,6 +394,23 @@
       $this->addQuery($queryStart, self::SECTION, $endDelimiter);
     }
 
+    /**
+     * Insert whitespaces possible queries between strict queries
+     * 1 query strict
+     * 2 query strict
+     * 3 query expect
+     *
+     * After insert list of queries will be:
+     *
+     * 1 query strict
+     * 2 query possible whitespace
+     * 3 query strict
+     * 4 query possible whitespace
+     * 5 query expect
+     *
+     *
+     * @return $this
+     */
     public function insertWhitespaceQueries() {
       $oldQueries = $this->queries;
       $this->queries = [];
@@ -400,14 +423,10 @@
         $i += 2;
       }
 
-      // unset last whitespace query
+      # unset last whitespace query
       unset($this->queries[($i - 1)]);
 
       return $this;
-    }
-
-    protected function log($msg) {
-//      echo $msg . "\n";
     }
 
   }

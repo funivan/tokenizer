@@ -4,9 +4,15 @@ php:
   - 5.4
 
 before_script:
-    - composer install
+  - composer self-update
+  - composer install --no-interaction
 
-script: phpunit --coverage-text --configuration tests/phpunit.xml tests/
+script:
+ - mkdir -p build/logs
+ - ./vendor/bin/phpunit --configuration tests/phpunit.xml --coverage-clover=build/logs/clover.xml tests/
+
+after_script:
+ - php ./vendor/bin/coveralls -v
 
 notifications:
   email:

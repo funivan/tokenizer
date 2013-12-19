@@ -95,4 +95,48 @@ CODE;
       $this->assertCount(0, $eq->getBlock());
 
     }
+
+    public function testExpect() {
+      $file = $this->initFileWithCode("<?php
+        echo 1+3-5;
+        echo 2+4-6;
+        echo 1+4;
+      ");
+
+      $collection = $file->getCollection();
+
+      $eq = $collection->extendedQuery();
+      $eq->strict()->valueIs('echo');
+      $eq->expect()->valueIs('-');
+
+      $this->assertCount(2, $eq->getBlock());
+    }
+
+    public function testSearch() {
+      $file = $this->initFileWithCode('<?php
+         echo 1+5*9; echo 2+4
+      ');
+      $q = $file->getCollection()->extendedQuery();
+      $q->strict()->valueIs('echo');
+      $q->search()->valueIs(';');
+
+      $this->assertCount(1, $q->getBlock());
+      $code = (string)$q->getBlock()->getFirst();
+      $this->assertEquals('echo 1+5*9;', $code);
+
+    }
+
+    public function testExpectResult() {
+      $file = $this->initFileWithCode('<?php
+         echo 1+5*9; echo 2+4
+      ');
+      $q = $file->getCollection()->extendedQuery();
+      $q->strict()->valueIs('echo');
+      $q->expect()->valueIs(';');
+
+      $this->assertCount(1, $q->getBlock());
+      $code = (string)$q->getBlock()->getFirst();
+      $this->assertEquals('echo 1+5*9', $code);
+    }
+
   }
