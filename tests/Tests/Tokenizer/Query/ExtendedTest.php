@@ -139,4 +139,52 @@ CODE;
       $this->assertEquals('echo 1+5*9', $code);
     }
 
+    public function testExpectFail() {
+      $file = $this->initFileWithCode('<?php
+         echo 1+5*9; echo 2+4
+      ');
+      $q = $file->getCollection()->extendedQuery();
+      $q->strict()->valueIs('echo');
+      $q->expect()->typeIs(T_WHITESPACE);
+
+      $this->assertCount(0, $q->getBlock());
+    }
+
+    public function testSectionFail() {
+      $file = $this->initFileWithCode('<?php
+         function(){}
+         function (){}
+      ');
+      $q = $file->getCollection()->extendedQuery();
+      $q->strict()->valueIs('function');
+      $q->section('(', ')');
+
+      $this->assertCount(2, $q->getBlock());
+    }
+
+    public function testMoreQueriesThanTokens() {
+      $file = $this->initFileWithCode('<?php
+         echo
+      ');
+      $q = $file->getCollection()->extendedQuery();
+      $q->strict()->valueLike('!.+!');
+      $q->strict()->typeIs(T_WHITESPACE);
+      $q->strict()->typeIs(T_ECHO);
+      $q->strict()->typeIs(T_WHITESPACE);
+      $q->strict()->valueLike('!.+!');
+
+      $this->assertCount(0, $q->getBlock());
+
+      $file = $this->initFileWithCode('<?php
+         echo 1;
+         echo');
+      $q = $file->getCollection()->extendedQuery();
+      $q->strict()->typeIs(T_ECHO);
+      $q->strict()->typeIs(T_WHITESPACE);
+      $q->strict()->valueLike('!.+!');
+
+      $this->assertCount(1, $q->getBlock());
+
+    }
+
   }

@@ -21,7 +21,7 @@
     protected $cache = null;
 
 
-    public function __construct($collection = null) {
+    public function __construct(Tokenizer\Collection $collection = null) {
       $this->collection = $collection;
     }
 

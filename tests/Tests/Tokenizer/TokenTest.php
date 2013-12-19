@@ -40,4 +40,12 @@
       unlink($file->getPath());
     }
 
+    public function testToString() {
+      $file = $this->initFileWithCode('<?php echo 1');
+      $firstToken = $file->getCollection()->getFirst();
+
+      $this->assertEquals('<?php ', (string)$firstToken);
+
+    }
+
   }

@@ -211,7 +211,6 @@
           # У нас є 2 або більше умов
           # І на останню умову немає токена.
           # Все цикл завершується.
-          // @todo Перевірити вихід із цикла, якщо остання умова possible
           if (!is_object($token)) {
             $lastTokenIndex = false;
             break;
@@ -343,11 +342,7 @@
      */
     protected function addQuery(Query $query, $type, $options = []) {
 
-      if (!in_array($type, [static::STRICT, static::POSSIBLE, static::EXPECT, static::SEARCH, static::SECTION])) {
-        throw new \Fiv\Tokenizer\Exception('Invalid condition type: ' . $type);
-      }
-
-      $this->cleanCache();
+     $this->cleanCache();
 
       $this->queries[] = [$query, $type, $options];
 
