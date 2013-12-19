@@ -2,6 +2,7 @@ Tokenizer
 =====
 
 [![Build Status](https://travis-ci.org/funivan/tokenizer.png?branch=master)](https://travis-ci.org/funivan/tokenizer)
+[![Coverage Status](https://coveralls.io/repos/funivan/tokenizer/badge.png)](https://coveralls.io/r/funivan/tokenizer)
 
 Flexible library for parsing and modify php code;
 
