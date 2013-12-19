@@ -22,7 +22,7 @@
      * <code>
      *
      * </code>
-     * @param sting $path
+     * @param string $path
      * @return File
      */
     public static function open($path) {

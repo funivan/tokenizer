@@ -12,7 +12,7 @@
      * @return array
      */
     public static function getTokensFromString($string) {
-      $rawTokens = @token_get_all($string);
+      $rawTokens = token_get_all($string);
       $tokens = [];
 
       foreach ($rawTokens as $index => $token) {

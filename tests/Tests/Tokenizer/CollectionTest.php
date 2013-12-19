@@ -111,4 +111,18 @@
 
     }
 
+    public function testNewCollection() {
+
+      $error = null;
+      try {
+        $collection = new \Fiv\Tokenizer\Collection();
+        $collection->setItems(array(
+          'test'
+        ));
+      } catch (\Exception $error) {
+
+      }
+      $this->assertInstanceOf('Exception', $error);
+    }
+
   }

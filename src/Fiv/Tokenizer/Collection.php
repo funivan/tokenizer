@@ -56,6 +56,7 @@
      * array of token objects
      *
      * @param array|Token[] $items
+     * @throws Exception
      * @return $this
      */
     public function setItems($items) {
@@ -63,8 +64,10 @@
       foreach ($items as $tokenData) {
         if ($tokenData instanceof Token) {
           $token = $tokenData;
-        } else {
+        } elseif (is_array($tokenData)) {
           $token = new Token($tokenData);
+        } else {
+          throw new Exception('Invalid token data. Expect token or array');
         }
         $setItems[] = $token;
       }

@@ -409,16 +409,16 @@
       $oldQueries = $this->queries;
       $this->queries = [];
 
-      $i = 0;
+      $index = 0;
       foreach ($oldQueries as $data) {
         list($query, $type, $options) = $data;
         $this->addQuery($query, $type, $options);
         $this->possible()->typeIs(T_WHITESPACE);
-        $i += 2;
+        $index += 2;
       }
 
       # unset last whitespace query
-      unset($this->queries[($i - 1)]);
+      unset($this->queries[($index - 1)]);
 
       return $this;
     }
