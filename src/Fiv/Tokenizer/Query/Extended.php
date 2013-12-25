@@ -6,6 +6,7 @@
   namespace Fiv\Tokenizer\Query;
 
   use Fiv\Tokenizer\Block;
+  use Fiv\Tokenizer\Exception;
   use Fiv\Tokenizer\Query;
   use Fiv\Tokenizer\Token;
 
@@ -41,6 +42,11 @@
      * @var array
      */
     protected $resultEndIndexes = [];
+
+    /**
+     * @var array
+     */
+    protected $moves = [];
 
     /**
      * @return Query
@@ -104,6 +110,33 @@
       $query = new Query();
       $this->addQuery($query, self::SEARCH);
       return $query;
+    }
+
+    /**
+     * Moves is very important in code match
+     *
+     * <code>
+     * # in:
+     * # $user = $this->getUser();
+     * $q->strict()->valueIs('$user');
+     * $q->search()->valueIs(';');
+     * # at this stage we have full string
+     * $q->move(-3)
+     *
+     * # now we cut 3 last tokens
+     * # out:
+     * # $user = $this->getUser
+     * </code>
+     * @param int $index
+     * @throws \Fiv\Tokenizer\Exception
+     */
+    public function move($index) {
+      $queriesNum = count($this->queries);
+      if ($queriesNum === 0) {
+        throw new Exception('Add query and then you can perform move operation');
+      }
+      $this->cleanCache();
+      $this->moves[($queriesNum - 1)] = $index;
     }
 
 
@@ -226,6 +259,7 @@
           if ($type == static::STRICT) {
             if ($isValid) {
               $lastTokenIndex = $queryIndex + $index;
+              $lastTokenIndex = $this->performMove($lastTokenIndex, $queryIndex);
             } else {
               $lastTokenIndex = false;
               break;
@@ -236,6 +270,7 @@
             if ($isValid) {
               # Токен підійшов ідемо перевіряти дальше
               $lastTokenIndex = $queryIndex + $index;
+              $lastTokenIndex = $this->performMove($lastTokenIndex, $queryIndex);
             } else {
               # Токен не підійшов перевіримо його на наступну умову
               $index--;
@@ -269,8 +304,9 @@
                 } elseif (!$validTokenFind) {
                   $index++;
                 } else {
-                  # go check next condition. Expect condition fail.
+                  # go check next condition. Expect condition end.
                   $lastTokenIndex = $queryIndex + $index;
+                  $lastTokenIndex = $this->performMove($lastTokenIndex, $queryIndex);
                   break;
                 }
               }
@@ -306,6 +342,7 @@
               if ($blockEndFlag === 0) {
                 $lastTokenIndex = $tokenIndex;
                 $index = $lastTokenIndex - $queryIndex;
+                $lastTokenIndex = $this->performMove($lastTokenIndex, $queryIndex);
                 break;
               }
             }
@@ -341,11 +378,23 @@
      */
     protected function addQuery(Query $query, $type, $options = []) {
 
-     $this->cleanCache();
+      $this->cleanCache();
 
       $this->queries[] = [$query, $type, $options];
 
       return $this;
+    }
+
+    /**
+     * @param int $lastTokenIndex
+     * @param int $queryIndex
+     * @return int
+     */
+    public function performMove($lastTokenIndex, $queryIndex) {
+      if (isset($this->moves[$queryIndex])) {
+        $lastTokenIndex += $this->moves[$queryIndex];
+      }
+      return $lastTokenIndex;
     }
 
     /**
@@ -409,10 +458,16 @@
       $oldQueries = $this->queries;
       $this->queries = [];
 
+      $oldMoves = $this->moves;
+      $this->moves = [];
+
       $index = 0;
-      foreach ($oldQueries as $data) {
+      foreach ($oldQueries as $queryIndex => $data) {
         list($query, $type, $options) = $data;
         $this->addQuery($query, $type, $options);
+        if (isset($oldMoves[$queryIndex])) {
+          $this->move($oldMoves[$queryIndex]);
+        }
         $this->possible()->typeIs(T_WHITESPACE);
         $index += 2;
       }

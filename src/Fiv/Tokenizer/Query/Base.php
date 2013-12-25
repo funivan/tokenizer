@@ -1,9 +1,5 @@
 <?php
 
-  /**
-   * @author Ivan Shcherbak <dev@funivan.com>
-   */
-
   namespace Fiv\Tokenizer\Query;
 
   use Fiv\Tokenizer;
