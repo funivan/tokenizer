@@ -11,13 +11,16 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/funivan/spl.git",
-                "reference": "c56eb13f8c5fe4cd99dfd376a500216d06fbeb6b"
+                "reference": "0ee18dcc47ea1a9b09b40b316ea133ba5596ef4c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/funivan/spl/zipball/c56eb13f8c5fe4cd99dfd376a500216d06fbeb6b",
-                "reference": "c56eb13f8c5fe4cd99dfd376a500216d06fbeb6b",
+                "url": "https://api.github.com/repos/funivan/spl/zipball/0ee18dcc47ea1a9b09b40b316ea133ba5596ef4c",
+                "reference": "0ee18dcc47ea1a9b09b40b316ea133ba5596ef4c",
                 "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4"
             },
             "require-dev": {
                 "phpunit/phpunit": "3.7.*",
@@ -40,7 +43,7 @@
                 }
             ],
             "description": "Standard library",
-            "time": "2013-12-18 19:43:30"
+            "time": "2013-12-27 06:42:46"
         }
     ],
     "packages-dev": [
