@@ -14,6 +14,11 @@
     protected $path = null;
 
     /**
+     * @var string
+     */
+    protected $initialContentHash = null;
+
+    /**
      * @var Collection
      */
     protected $collection = null;
@@ -36,6 +41,7 @@
     public function __construct($path) {
       $this->path = $path;
       $code = file_get_contents($path);
+      $this->initialContentHash = md5($code);
       $tokens = Helper::getTokensFromString($code);
       $this->collection = new Collection($tokens);
     }
@@ -50,12 +56,15 @@
 
 
     /**
-     * Save tokens to file
+     * Save tokens to
      *
      * @return bool
      */
     public function save() {
       $newCode = $this->collection->assemble();
+      if (md5($newCode) == $this->initialContentHash) {
+        return true;
+      }
       file_put_contents($this->path, $newCode);
       return true;
     }

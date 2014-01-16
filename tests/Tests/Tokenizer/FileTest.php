@@ -78,4 +78,14 @@
       $this->assertCount(7, $file->getCollection());
     }
 
+    public function testSaveFileWithoutChange() {
+      $file = new \Fiv\Tokenizer\File($this->getDemoDataDir() . '/demo.php');
+      $startModificationTime = \filemtime($file->getPath());
+      sleep(1);
+      $file->save();
+
+      $endModificationTime = \filemtime($file->getPath());
+      $this->assertEquals($endModificationTime, $startModificationTime);
+    }
+
   }
