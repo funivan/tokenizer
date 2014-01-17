@@ -1,7 +1,13 @@
 <?php
 
+  require_once __DIR__ . '/../vendor/autoload.php';
+  /*
+    Lets detect next conditions:
 
-  require_once __DIR__ . '/vendor/autoload.php';
+    1. if (true)
+    2. if (!empty($test) && isset($test))
+    3. elseif (is_array(array(isset($a))))
+  */
 
   $fileTokens = new Fiv\Tokenizer\File(__FILE__);
   $query = $fileTokens->getCollection()->extendedQuery();

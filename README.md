@@ -8,7 +8,7 @@ Flexible library for parsing and modify php code;
 
 
 ##Install:
-`composer require fiv/tokenizer:dev-master`
+`composer require fiv/tokenizer:*`
 
 ##Use
 For example lets find all if and elseif conditions:
