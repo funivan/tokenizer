@@ -61,10 +61,10 @@
      * @return bool
      */
     public function save() {
-      $newCode = $this->collection->assemble();
-      if (md5($newCode) == $this->initialContentHash) {
+      if (!$this->isChanged()) {
         return true;
       }
+      $newCode = $this->collection->assemble();
       file_put_contents($this->path, $newCode);
       return true;
     }
@@ -87,6 +87,14 @@
      */
     public function getPath() {
       return $this->path;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isChanged() {
+      $newCode = $this->collection->assemble();
+      return (md5($newCode) != $this->initialContentHash);
     }
 
   }
