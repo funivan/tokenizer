@@ -6,9 +6,9 @@
    * Represent access and manipulation array of tokens
    *
    * @method \Fiv\Tokenizer\Token getLast();
+   * @method \Fiv\Tokenizer\Token current();
    * @method \Fiv\Tokenizer\Token getFirst();
    * @method \Fiv\Tokenizer\Token[] getItems();
-   * @method \Fiv\Tokenizer\Token[] iterate();
    * @method \Fiv\Tokenizer\Collection extractItems($offset, $length = null);
    *
    * @package Fiv\Tokenizer
@@ -40,7 +40,7 @@
      */
     public function assemble() {
       $string = '';
-      foreach ($this->iterate() as $token) {
+      foreach ($this as $token) {
         if (!$token->valid()) {
           continue;
         }
@@ -123,7 +123,7 @@
      * @return $this
      */
     public function refresh() {
-      foreach ($this->iterate() as $index => $token) {
+      foreach ($this as $index => $token) {
         if (!$token->valid()) {
           unset($this->items[$index]);
         }
@@ -185,7 +185,7 @@
      */
     public function getDumpString() {
       $string = "<pre>\n";
-      foreach ($this->getItems() as $token) {
+      foreach ($this as $token) {
         $string .= '[' . $token->getTypeName() . ']' . "\n" . print_r($token->getData(), true) . "\n";
       }
       $string .= " </pre > ";

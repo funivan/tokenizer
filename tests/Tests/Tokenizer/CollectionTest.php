@@ -12,13 +12,11 @@
 
     public function testCreateFromString() {
       $collection = Collection::createFromString('<?php echo 123;');
-
       $this->assertInstanceOf(Collection::N, $collection);
     }
 
     public function testGetNext() {
       $collection = Collection::createFromString('<?php echo 123;');
-
       $nextToken = $collection->getNext();
       $this->assertInstanceOf(Token::N, $nextToken);
 

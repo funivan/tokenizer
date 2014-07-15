@@ -7,8 +7,8 @@
    *
    * @method \Fiv\Tokenizer\Collection getLast();
    * @method \Fiv\Tokenizer\Collection getFirst();
+   * @method \Fiv\Tokenizer\Collection current();
    * @method \Fiv\Tokenizer\Collection[] getItems();
-   * @method \Fiv\Tokenizer\Collection[] iterate();
    * @method \Fiv\Tokenizer\Collection extractItems($offset, $length = null);
    *
    * @package Fiv\Tokenizer
@@ -46,7 +46,7 @@
         throw new \Fiv\Tokenizer\Exception('Invalid callback function');
       }
 
-      foreach ($this->getItems() as $collection) {
+      foreach ($this as $collection) {
         $collection->map($callback);
       }
 

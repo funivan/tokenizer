@@ -59,7 +59,7 @@
           $q->strict()->valueIs(['"', "'"]);
 
           $block = $q->getBlock();
-          foreach ($block->getItems() as $col) {
+          foreach ($block as $col) {
             if ($col->getFirst()->value() == $col->getLast()->value()) {
               $col->getFirst()->remove();
               $col->getLast()->remove();
@@ -73,7 +73,7 @@
           $q->strict()->valueIs(['"', "'"]);
 
           $block = $q->getBlock();
-          foreach ($block->getItems() as $col) {
+          foreach ($block as $col) {
             if ($col->getFirst()->value() == $col->getLast()->value()) {
               $col->getFirst()->remove();
               $col->getLast()->remove();
@@ -90,7 +90,7 @@
           $q->strict()->typeIs(T_STRING);
 
           $block = $q->getBlock();
-          foreach ($block->getItems() as $col) {
+          foreach ($block as $col) {
             $delimiter = $col->getFirst();
 
             $dot = new \Fiv\Tokenizer\Token();
@@ -103,7 +103,7 @@
             $col->append(clone $delimiter);
 
             $col->getFirst()->setValue($col->assemble());
-            foreach ($col->getItems() as $index => $token) {
+            foreach ($col as $index => $token) {
               if ($index !== 0) {
                 $token->remove();
               }
@@ -120,7 +120,7 @@
           $q->strict()->typeIs(T_ENCAPSED_AND_WHITESPACE);
 
           $block = $q->getBlock();
-          foreach ($block->getItems() as $col) {
+          foreach ($block as $col) {
 
             $delimiter = $col->getFirst();
 
@@ -135,7 +135,7 @@
 
             $col->getFirst()->setValue($col->assemble());
 
-            foreach ($col->getItems() as $index => $token) {
+            foreach ($col as $index => $token) {
 
               if ($index !== 0) {
                 $token->remove();
@@ -171,7 +171,7 @@
       $q->search()->valueIs('}');
 
       $block = $q->getBlock();
-      foreach ($block->getItems() as $col) {
+      foreach ($block as $col) {
         $open = $col->query()->valueIs('{')->getTokensNum();
         $close = $col->query()->valueIs('}')->getTokensNum();
         if ($open == $close) {

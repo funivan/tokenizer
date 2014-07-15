@@ -1,7 +1,4 @@
 <?php
-  /**
-   * @author Ivan Shcherbak <dev@funivan.com>
-   */
 
   namespace Fiv\Tokenizer\Query;
 
@@ -226,7 +223,7 @@
 
       # Колекція яка містить токени.
       # Кожен токен задовільняє першій умові
-      foreach ($this->collection->getItems() as $index => $tokenRaw) {
+      foreach ($this->collection as $index => $tokenRaw) {
         //echo "Start Iterate group from token :" . $index . "\n";
         # Умови спрацювали якщо ми оприділили де закінчується наш блок
 
@@ -286,7 +283,7 @@
               # If condition break return last token.
               # And set Index to this token +1 For next condition
               $tokenLastIndexInCollection = $this->collection->count() - 1;
-              foreach ($this->collection->iterate() as $indexForExpectCheck => $tokenForExpectCheck) {
+              foreach ($this->collection as $indexForExpectCheck => $tokenForExpectCheck) {
                 if ($indexForExpectCheck < $lastTokenIndex) {
                   continue;
                 }
@@ -328,7 +325,7 @@
             }
 
             /** @var $token Token */
-            foreach ($this->collection->getItems() as $tokenIndex => $token) {
+            foreach ($this->collection as $tokenIndex => $token) {
               if ($tokenIndex < $startIndex) {
                 continue;
               }
@@ -371,7 +368,7 @@
     /**
      *
      * @param Query $query
-     * @param int   $type
+     * @param int $type
      * @param array $options
      * @throws \Fiv\Tokenizer\Exception
      * @return Extended

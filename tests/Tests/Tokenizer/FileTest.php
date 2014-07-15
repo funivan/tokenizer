@@ -28,7 +28,7 @@
       $q = $file->getCollection()->query();
       $q->valueIs(1);
 
-      foreach ($q->getTokens()->getItems() as $token) {
+      foreach ($q->getTokens() as $token) {
         $token->setValue(2);
       }
 

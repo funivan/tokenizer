@@ -14,9 +14,9 @@
   $query->strict()->valueIs(array('if', 'elseif'));
   $query->section('(', ')');
 
-  $conditions = $query->getBlock();
-  foreach ($conditions as $condition) {
-    echo $condition . "\n";
+  $blocks = $query->getBlock();
+  foreach ($blocks as $code) {
+    echo $code . "\n";
   }
 
   if (true) {

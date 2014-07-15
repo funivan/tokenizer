@@ -24,9 +24,16 @@
     protected $collection = null;
 
     /**
-     * <code>
      *
-     * </code>
+     * ```
+     * $file = File::open('test.php');
+     * $tokens = $file->getCollection();
+     * if ($tokens[0]=='<?php'){
+     *  $tokens[0] = '<?';
+     *  $file->save();
+     * }
+     * ```
+     *
      * @param string $path
      * @return File
      */
